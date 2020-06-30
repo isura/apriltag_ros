@@ -32,7 +32,7 @@
 #include "apriltag_ros/single_image_detector.h"
 
 #include <opencv2/highgui/highgui.hpp>
-#include <std_msgs/Header.h>
+#include <std_msgs/msg/header.h>
 
 namespace apriltag_ros
 {
