@@ -34,12 +34,14 @@
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "apriltag_ros_single_image_server");
+  rclcpp::init(argc, argv);
 
-  ros::NodeHandle nh;
-  ros::NodeHandle pnh("~");
+  rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("apriltag_ros_single_image_server");
 
-  apriltag_ros::SingleImageDetector continuous_tag_detector(nh, pnh);
-  
-  ros::spin();
+  apriltag_ros::SingleImageDetector single_tag_detector(node);
+
+  RCLCPP_INFO(node->get_logger(), "Ready to detect AprilTags.");
+
+  rclcpp::spin(node);
+  rclcpp::shutdown();
 }

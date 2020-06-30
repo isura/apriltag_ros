@@ -45,7 +45,7 @@
 #define APRILTAG_ROS_SINGLE_IMAGE_DETECTOR_H
 
 #include "apriltag_ros/common_functions.h"
-#include <apriltag_ros/AnalyzeSingleImage.h>
+#include <apriltag_msgs/srv/analyze_single_image.hpp>
 
 namespace apriltag_ros
 {
@@ -53,17 +53,19 @@ namespace apriltag_ros
 class SingleImageDetector
 {
  private:
-  TagDetector tag_detector_;
-  ros::ServiceServer single_image_analysis_service_;
+  rclcpp::Node::SharedPtr node_;
 
-  ros::Publisher tag_detections_publisher_;
+  TagDetector tag_detector_;
+  rclcpp::Service<apriltag_msgs::srv::AnalyzeSingleImage>::SharedPtr single_image_analysis_service_;
+
+  rclcpp::Publisher<apriltag_msgs::msg::AprilTagDetectionArray>::SharedPtr tag_detections_publisher_;
   
  public:
-  SingleImageDetector(ros::NodeHandle& nh, ros::NodeHandle& pnh);
+  SingleImageDetector(rclcpp::Node::SharedPtr& node_);
 
   // The function which provides the single image analysis service
-  bool analyzeImage(apriltag_ros::AnalyzeSingleImage::Request& request,
-                     apriltag_ros::AnalyzeSingleImage::Response& response);
+  bool analyzeImage(const std::shared_ptr<apriltag_msgs::srv::AnalyzeSingleImage::Request>  request,
+                          std::shared_ptr<apriltag_msgs::srv::AnalyzeSingleImage::Response> response);
 };
 
 } // namespace apriltag_ros
